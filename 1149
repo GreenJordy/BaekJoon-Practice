@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+public class Main {
+
+    static int[][] cost;
+    static int[][] dp;
+    static int red = 0;
+    static int green = 1;
+    static int blue = 2;
+    
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+        Scanner in = new Scanner(System.in);
+
+        int N = in.nextInt();
+
+        cost = new int[N][3];
+        dp = new int[N][3];
+
+        for(int i = 0; i < N; i++) {
+
+            cost[i][red] = in.nextInt();
+            cost[i][green] = in.nextInt();
+            cost[i][blue] = in.nextInt();
+
+        }
+        
+        dp[0][red] = cost[0][red];
+        dp[0][green] = cost[0][green];
+        dp[0][blue] = cost[0][blue];
+
+        int result1 = TotalCost((N-1), red);
+        int result2 = TotalCost((N-1), green);
+        int result3 = TotalCost((N-1), blue);
+
+        System.out.println(Math.min(Math.min(result1, result2), result3));
+        
+        in.close();
+    }
+
+    static int TotalCost(int N, int color) {
+
+
+        if (dp[N][color] == 0) {
+	    	
+	        if(color == red) {
+	
+	        	dp[N][color] = cost[N][color] + Math.min(TotalCost((N-1), blue), TotalCost((N-1), green));
+	
+	        } else if(color == green) {
+	
+	        	dp[N][color] = cost[N][color] + Math.min(TotalCost((N-1), red), TotalCost((N-1), blue));
+	
+	        } else if(color == blue) {
+	
+	        	dp[N][color] = cost[N][color] + Math.min(TotalCost((N-1), red), TotalCost((N-1), green));
+	
+	        }
+
+        } 
+
+        return dp[N][color];
+
+
+    }
+
+}
